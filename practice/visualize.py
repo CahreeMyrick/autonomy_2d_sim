@@ -2,26 +2,27 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import numpy as np
 
-def animate():
+def animate(sim):
   # create fig 
   fig, ax = plt.subplots()
-  x0, y0 = 10, 10
 
   # set limits
   ax.set_xlim(0, 100)
   ax.set_ylim(0, 100)
 
   # plot
-  point = ax.plot([x0], [y0], "bo")[0]
+  vehicle_dot = ax.plot([], [], "bo", label="Vehicle")[0]
 
   def update(frame):
-    x = x0 + frame
-    y = y0 + frame ** 2 / 100
-    
-    point.set_data([x], [y])
+   sim.step()
 
-    return [point]
-  
+   x,y = sim.state.position()
+   print(x,y)
+
+   vehicle_dot.set_data([x], [y])
+
+   return [vehicle_dot]
+
   ani = FuncAnimation(
         fig,
         update,
@@ -32,7 +33,6 @@ def animate():
   
   plt.show()
   
-animate()
 
 
 
